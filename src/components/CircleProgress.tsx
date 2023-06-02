@@ -27,7 +27,7 @@ export function CircularProgress() {
       style={{
         background: `conic-gradient(#306285 ${
           progress * 3.6
-        }deg, #ededed 0deg)`,
+        }deg, #91A97C 0deg)`,
       }}
     >
       <span className="relative font-600 text-[40px] text-[#306285]">
