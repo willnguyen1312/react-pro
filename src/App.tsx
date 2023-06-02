@@ -1,39 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const [progress, setProgress] = useState(1);
+  const circularProgressRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const circularProgress = document.querySelector(
-      ".circular-progress"
-    ) as HTMLDivElement;
-    const progressValue = document.querySelector(
-      ".progress-value"
-    ) as HTMLDivElement;
+    const circularProgress = circularProgressRef.current as HTMLDivElement;
 
     let progressStartValue = 0;
     const progressEndValue = 90;
     const speed = 100;
 
     const progress = setInterval(() => {
-      progressStartValue++;
-      progressValue.textContent = `${progressStartValue}%`;
-      circularProgress.style.background = `conic-gradient(#7d2ae8 ${
+      // progressStartValue++;
+      // progressValue.textContent = `${progressStartValue}%`;
+      setProgress(progressStartValue++);
+      circularProgress.style.background = `conic-gradient(#306285 ${
         progressStartValue * 3.6
       }deg, #ededed 0deg)`;
-      if (progressStartValue == progressEndValue) {
+      if (progressStartValue === progressEndValue) {
         clearInterval(progress);
       }
     }, speed);
   }, []);
 
   return (
-    <div className="container">
-      <div className="circular-progress">
-        <span className="progress-value">0%</span>
+    <div className="p-4">
+      <div ref={circularProgressRef} className="circular-progress">
+        <span className="relative font-600 text-[40px] text-[#306285]">
+          {`${progress}%`}
+        </span>
       </div>
-      <span className="text">HTML & CSS</span>
     </div>
   );
 }
