@@ -1,11 +1,18 @@
-import "virtual:uno.css";
-import "@unocss/reset/tailwind.css";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import * as ReactDOM from "react-dom/client";
+import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+const client = new ApolloClient({
+  uri: "https://flyby-router-demo.herokuapp.com",
+  cache: new InMemoryCache(),
+});
+
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLDivElement
+);
+
+root.render(
+  <ApolloProvider client={client}>
     <App />
-  </React.StrictMode>
+  </ApolloProvider>
 );
