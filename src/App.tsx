@@ -5,14 +5,14 @@
 import { FlightMaps } from "./components/Maps";
 
 function App() {
-  return (
-    <div className="p-4">
-      {/* <CircularProgress /> */}
-      {/* <BarChart /> */}
-      {/* <LineChartDemo /> */}
-      <FlightMaps />
-    </div>
-  );
+    return (
+        <div className="p-4">
+            {/* <CircularProgress /> */}
+            {/* <BarChart /> */}
+            {/* <LineChartDemo /> */}
+            <FlightMaps />
+        </div>
+    );
 }
 
 export default App;
