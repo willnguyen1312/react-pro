@@ -44,7 +44,7 @@ function App() {
         }
 
         createZoomImage();
-    }, []);
+    }, [createZoomImageHover]);
 
     return (
         <div className="p-4 font-sans">
