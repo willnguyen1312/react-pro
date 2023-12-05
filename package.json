@@ -12,7 +12,10 @@
         "format:fix": "prettier --cache --write --ignore-path .gitignore ."
     },
     "dependencies": {
+        "@tanstack/react-router": "0.0.1-beta.230",
+        "@tanstack/router-devtools": "0.0.1-beta.230",
         "@zoom-image/react": "^0.4.3",
+        "axios": "^1.6.2",
         "immer": "^10.0.3",
         "leaflet": "^1.9.4",
         "react": "^18.2.0",
