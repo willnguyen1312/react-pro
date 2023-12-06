@@ -1,70 +1,60 @@
-import { useZoomImageHover } from "@zoom-image/react";
-import { useEffect, useRef, useState } from "react";
-
-const getMeta = (url: string): Promise<HTMLImageElement> =>
-    new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = (err) => reject(err);
-        img.src = url;
-    });
+import * as V from "varsace";
+import Logo from "./Logo";
+import { css } from "./css-hooks";
 
 function App() {
-    const imageHoverContainerRef = useRef<HTMLDivElement>(null);
-    const zoomTargetRef = useRef<HTMLDivElement>(null);
-    const { createZoomImage: createZoomImageHover } = useZoomImageHover();
-    const [aspectRatio, setAspectRatio] = useState(0);
-
-    useEffect(() => {
-        async function createZoomImage() {
-            const image = await getMeta(
-                "https://willnguyen1312.github.io/zoom-image/sample.avif",
-            );
-            const { naturalHeight, naturalWidth } = image;
-            const aspectRatio = naturalWidth / naturalHeight;
-            const CONTAINER_WIDTH = 200;
-            const CONTAINER_HEIGHT = CONTAINER_WIDTH / aspectRatio;
-
-            const imageContainer =
-                imageHoverContainerRef.current as HTMLDivElement;
-
-            imageContainer.style.width = `${CONTAINER_WIDTH}px`;
-            imageContainer.style.height = `${CONTAINER_HEIGHT}px`;
-
-            const zoomTarget = zoomTargetRef.current as HTMLDivElement;
-            createZoomImageHover(imageContainer, {
-                zoomImageSource:
-                    "https://willnguyen1312.github.io/zoom-image/sample.avif",
-                customZoom: { width: 300, height: 500 },
-                zoomTarget,
-                scale: 4,
-            });
-
-            setAspectRatio(aspectRatio);
-        }
-
-        createZoomImage();
-    }, [createZoomImageHover]);
-
     return (
-        <div className="p-4 font-sans">
-            <p>Hover inside the image to see zoom effect</p>
-            <div
-                ref={imageHoverContainerRef}
-                className={`relative ${
-                    aspectRatio ? "flex" : "hidden"
-                } items-start`}
-            >
-                <img
-                    className="h-full w-full"
-                    alt="Small Pic"
-                    src="https://willnguyen1312.github.io/zoom-image/sample.avif"
-                />
-                <div
-                    ref={zoomTargetRef}
-                    className="absolute left-[350px]"
-                ></div>
+        <div
+            style={css({
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                background: V.white,
+                color: V.black,
+                dark: { background: V.black, color: V.white },
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+            })}
+        >
+            <div style={{ fontSize: 192 }}>
+                <Logo />
             </div>
+            <a
+                href="https://css-hooks.com/docs/preact/getting-started"
+                style={css({
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "1.333rem",
+                    fontWeight: 700,
+                    letterSpacing: "-0.03em",
+                    border: 0,
+                    textDecoration: "none",
+                    background: V.gray50,
+                    color: V.white,
+                    padding: "0.5em 0.75em",
+                    display: "inline-block",
+                    hover: {
+                        background: V.blue40,
+                    },
+                    active: {
+                        background: V.red40,
+                    },
+                    dark: {
+                        background: V.gray70,
+                        hover: {
+                            background: V.blue50,
+                        },
+                        active: {
+                            background: V.red50,
+                        },
+                    },
+                })}
+            >
+                Get started
+            </a>
         </div>
     );
 }
