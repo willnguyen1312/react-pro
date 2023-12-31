@@ -1,8 +1,6 @@
-import "@fontsource/inter/latin-700.css";
-import { hooks } from "./css-hooks";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "virtual:uno.css";
 import App from "./App";
 
 const rootElement = document.getElementById("root") as HTMLElement;
@@ -11,11 +9,6 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
     <React.StrictMode>
-        <style dangerouslySetInnerHTML={{ __html: hooks }} />
         <App />
     </React.StrictMode>,
 );
-
-setTimeout(() => {
-    console.log(rootElement.innerHTML);
-}, 1000);
