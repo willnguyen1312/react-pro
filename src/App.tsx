@@ -33,6 +33,31 @@ function Parent() {
     );
 }
 
+type Com = "Parent" | "Child";
+
+const Record = {
+    Parent,
+    Child,
+} as const;
+
+type Props =
+    | {
+          type: "Parent";
+      }
+    | { type: "Child"; show: boolean };
+
+const Comp = (props: Props) => {
+    const { type, ...rest } = props;
+    const Comp = Record[type] as any;
+
+    return <Comp {...rest} />;
+};
+
 export default function App() {
-    return <Parent />;
+    return (
+        <>
+            <Comp type="Parent" />;
+            <Comp type="Child" show />;
+        </>
+    );
 }
