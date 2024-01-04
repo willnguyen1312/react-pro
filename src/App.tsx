@@ -54,10 +54,11 @@ const Comp = (props: Props) => {
 };
 
 export default function App() {
+    const cond = 0
     return (
         <>
-            <Comp type="Parent" />;
-            <Comp type="Child" show />;
+            {cond &&<Comp type="Parent" />}
+            <Comp type="Child" show />
         </>
     );
 }
