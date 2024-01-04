@@ -54,11 +54,24 @@ const Comp = (props: Props) => {
 };
 
 export default function App() {
-    const cond = 0
+    const [count, setCount] = React.useState(0);
+
     return (
         <>
-            {cond &&<Comp type="Parent" />}
-            <Comp type="Child" show />
+            <h1>Count: {count}</h1>
+            <button
+                onClick={() => {
+                    setCount(1);
+
+                    setCount(3);
+
+                    setCount(5);
+
+                    setCount((count) => count + 1);
+                }}
+            >
+                Increment
+            </button>
         </>
     );
 }
