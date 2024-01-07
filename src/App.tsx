@@ -5,17 +5,21 @@ import { useEffect } from "react";
 
 export function App() {
     useEffect(() => {
-        document.addEventListener("mousedown", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            console.log("Document clicked");
-        });
+        window.addEventListener(
+            "click",
+            (event) => {
+                console.log("Document clicked");
+                event.preventDefault();
+                event.stopPropagation();
+            },
+            true,
+        );
     }, []);
     return (
         <AppProvider i18n={enTranslations}>
             <Button
                 onClick={() => {
-                    console.log("Button clicked");
+                    alert("Button clicked");
                 }}
                 children="Button"
             />
