@@ -15,8 +15,8 @@
         "@css-hooks/react": "^1.6.0",
         "@fontsource/inter": "^5.0.16",
         "@shopify/polaris": "^12.6.0",
-        "@tanstack/react-router": "1.1.9",
-        "@tanstack/router-devtools": "1.1.9",
+        "@tanstack/react-router": "1.1.10",
+        "@tanstack/router-devtools": "1.1.10",
         "@zoom-image/react": "^0.4.4",
         "axios": "^1.6.5",
         "immer": "^10.0.3",
@@ -30,7 +30,7 @@
         "zustand": "^4.4.7"
     },
     "devDependencies": {
-        "@namnode/vite-plugin-inspect-react": "^1.4.0",
+        "@namnode/vite-plugin-inspect-react": "^1.6.0",
         "@types/leaflet": "^1.9.8",
         "@types/node": "^20.10.7",
         "@types/react": "^18.2.47",
