@@ -6,7 +6,15 @@ import UnoCSS from "unocss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [inspectReact(), react(), UnoCSS()],
+    plugins: [
+        inspectReact({
+            formatDataInspectId: (id) => {
+                return id.substring(__dirname.length + 1);
+            },
+        }),
+        react(),
+        UnoCSS(),
+    ],
     server: {
         port: 1312,
         host: true,
