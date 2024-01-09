@@ -3,19 +3,19 @@ import Logo from "./Logo";
 import { css } from "./css-hooks";
 
 const Child = ({ content = "Hello from child" }: { content?: string }) => {
-    return <h1>{content}</h1>;
+  return <h1>{content}</h1>;
 };
 
 const Parent = ({ content }: { content?: string }) => {
-    return <Child content={content} />;
+  return <Child content={content} />;
 };
 
 function App() {
-    const props = {
-        content: "Hello from props",
-    };
+  const props = {
+    content: "Hello from props",
+  };
 
-    return <Parent {...props} content="wakanda" />;
+  return <Parent {...props} content="wakanda" />;
 }
 
 export default App;
