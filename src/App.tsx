@@ -2,38 +2,24 @@
 import { AppProvider, Button } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 import enTranslations from "@shopify/polaris/locales/en.json";
-import { Component, useReducer, useRef } from "react";
-import ReactDOM from "react-dom";
+import { ElementRef, useEffect, useReducer, useRef } from "react";
 
 function callMe() {
   console.log("called");
 }
-class ReactComment extends Component {
-  static defaultProps = {
-    trim: true,
-  };
 
-  componentDidMount() {
-    let el = ReactDOM.findDOMNode(this);
-    if (el) {
-      ReactDOM.unmountComponentAtNode(el);
-      el.outerHTML = this.createComment();
+function ReactComment({ children }) {
+  const ref = useRef<ElementRef<"div">>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (element) {
+      element.outerHTML = `<!-- ${children} -->`;
     }
-  }
+  }, []);
 
-  createComment() {
-    let text = this.props.text;
-
-    if (this.props.trim) {
-      text = text.trim();
-    }
-
-    return `<!-- ${text} -->`;
-  }
-
-  render() {
-    return <div />;
-  }
+  return <div ref={ref} />;
 }
 
 export default function App() {
@@ -47,7 +33,7 @@ export default function App() {
     <AppProvider i18n={enTranslations}>
       <Button onClick={rerender}>Click me to re-render 🚀</Button>
 
-      <ReactComment text="<fragment>" />
+      <ReactComment>This is cool</ReactComment>
     </AppProvider>
   );
 }
