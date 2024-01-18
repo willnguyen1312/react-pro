@@ -1,4 +1,4 @@
-import { ElementRef, useRef } from "react";
+import { createPortal } from "react-dom";
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 // import App from "./App";
@@ -7,26 +7,18 @@ const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
 
-const App = () => {
-  const buttonRef = useRef<ElementRef<"button">>(null);
+export const App = () => {
   return (
     <div
       onClick={(event) => {
-        const btnElement = buttonRef.current;
-
-        if (btnElement) {
-          const isFromButton = event.target === (btnElement as HTMLElement);
-
-          if (isFromButton) {
-            console.log("clicked from button");
-          } else {
-            console.log("clicked from elsewhere");
-          }
-        }
+        console.log(event.target);
       }}
     >
-      <h1>Hi</h1>
-      <button ref={buttonRef}>Click me</button>
+      <p>This child is placed in the parent div.</p>
+      {createPortal(
+        <p>This child is placed in the document body.</p>,
+        document.body,
+      )}
     </div>
   );
 };
