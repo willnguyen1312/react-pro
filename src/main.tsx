@@ -10,21 +10,18 @@ const root = ReactDOM.createRoot(rootElement);
 export const App = () => {
   return (
     <div
-      onClick={(event) => {
+      onFocus={(event) => {
         console.log(event.target);
       }}
     >
       <p>This child is placed in the parent div.</p>
-      {createPortal(
+      <input type="text" placeholder="Hi there" />
+      {/* {createPortal(
         <p>This child is placed in the document body.</p>,
         document.body,
-      )}
+      )} */}
     </div>
   );
 };
 
-root.render(
-  <>
-    <App />
-  </>,
-);
+root.render(<App />);
