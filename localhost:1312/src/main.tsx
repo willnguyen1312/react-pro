@@ -12,10 +12,10 @@ function syncFunc() {
 
 async function asyncFunc() {
   // Block main thread 3s
-  const now = Date.now();
-  while (Date.now() < now + 3000) {
+  // const now = Date.now();
+  // while (Date.now() < now + 3000) {
     // do nothing
-  }
+  // }
 
   // throw new Error("This is an async error");
   console.log("Async function done");
@@ -24,11 +24,11 @@ async function asyncFunc() {
 export const App = () => {
   console.log("Ready to render");
 
-  asyncFunc();
+  // asyncFunc();
 
-  // useEffect(() => {
-  //   asyncFunc();
-  // }, []);
+  useEffect(() => {
+    asyncFunc();
+  }, []);
 
   console.log("About to render");
 
