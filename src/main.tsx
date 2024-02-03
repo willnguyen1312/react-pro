@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 
@@ -8,6 +8,13 @@ const root = ReactDOM.createRoot(rootElement);
 
 function syncFunc() {
   throw new Error("This is a sync error");
+}
+
+function sleep(ms: number) {
+  const now = Date.now();
+  while (Date.now() < now + ms) {
+    // do nothing
+  }
 }
 
 async function asyncFunc() {
@@ -22,15 +29,15 @@ async function asyncFunc() {
 }
 
 export const App = () => {
-  console.log("Ready to render");
+  const [counter, setCounter] = useState(0);
+  // console.log("Ready to render");
 
-  asyncFunc();
+  useEffect(() => {
+    sleep(2000);
+    console.log("Counter changed");
+  }, [counter]);
 
-  // useEffect(() => {
-  //   asyncFunc();
-  // }, []);
-
-  console.log("About to render");
+  // console.log("About to render");
 
   return (
     <>
@@ -38,11 +45,13 @@ export const App = () => {
       <button
         onClick={() => {
           // syncFunc();
-          console.log("Button clicked");
+          // console.log("Button clicked");
+          setCounter((prev) => prev + 1);
         }}
       >
         Click me
       </button>
+      <p>{counter}</p>
     </>
   );
 };
