@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "virtual:uno.css";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
-const root = ReactDOM.createRoot(rootElement);
+// const root = ReactDOM.createRoot(rootElement);
 
 function syncFunc() {
   throw new Error("This is a sync error");
@@ -56,4 +56,4 @@ export const App = () => {
   );
 };
 
-root.render(<App />);
+ReactDOM.render(<App />, document.getElementById("root"));
