@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 
 const rootElement = document.getElementById("root") as HTMLElement;
+
+const root = ReactDOM.createRoot(rootElement);
 
 // const root = ReactDOM.createRoot(rootElement);
 
@@ -30,14 +32,14 @@ async function asyncFunc() {
 
 export const App = () => {
   const [counter, setCounter] = useState(0);
-  // console.log("Ready to render");
+  console.log("Ready to render");
 
   useEffect(() => {
-    sleep(2000);
+    sleep(3000);
     console.log("Counter changed");
   }, [counter]);
 
-  // console.log("About to render");
+  console.log("About to render");
 
   return (
     <>
@@ -56,4 +58,4 @@ export const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+root.render(<App />);
