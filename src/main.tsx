@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 
@@ -32,30 +32,41 @@ async function asyncFunc() {
 
 export const App = () => {
   const [counter, setCounter] = useState(0);
+  const [arr, setArr] = useState([1, 2, 3, 4, 5, 6, 7]);
 
-  const array = useMemo(() => {
-    const isOdd = counter % 2 === 1;
+  // const array = useMemo(() => {
+  //   const isOdd = counter % 2 === 1;
 
-    if (isOdd) {
-      return [<div>Odd One</div>];
-    }
+  //   if (isOdd) {
+  //     return [<div>Odd One</div>];
+  //   }
 
-    return [<div>Even One</div>];
-  }, [counter]);
+  //   return [<div>Even One</div>];
+  // }, [counter]);
+
+  console.log(arr);
 
   return (
     <>
       <p>Simple app</p>
       <button
         onClick={() => {
-          setCounter((prev) => prev + 1);
+          // setCounter((prev) => prev + 1);
+          // shuffle Array
+          // arr.reverse();
+          // console.log("arr", arr);
+          arr.unshift(arr.length);
+
+          setArr([...arr]);
         }}
       >
         Click me
       </button>
       <p>{counter}</p>
 
-      {array}
+      {arr.map((_, index) => (
+        <input key={index} />
+      ))}
     </>
   );
 };
