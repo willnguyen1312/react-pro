@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 
@@ -32,28 +32,30 @@ async function asyncFunc() {
 
 export const App = () => {
   const [counter, setCounter] = useState(0);
-  console.log("Ready to render");
 
-  useEffect(() => {
-    sleep(3000);
-    console.log("Counter changed");
+  const array = useMemo(() => {
+    const isOdd = counter % 2 === 1;
+
+    if (isOdd) {
+      return [<div>Odd One</div>];
+    }
+
+    return [<div>Even One</div>];
   }, [counter]);
-
-  console.log("About to render");
 
   return (
     <>
       <p>Simple app</p>
       <button
         onClick={() => {
-          // syncFunc();
-          // console.log("Button clicked");
           setCounter((prev) => prev + 1);
         }}
       >
         Click me
       </button>
       <p>{counter}</p>
+
+      {array}
     </>
   );
 };
