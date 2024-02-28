@@ -1,23 +1,25 @@
-// @ts-nocheck
 import { AppProvider, Button } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 import enTranslations from "@shopify/polaris/locales/en.json";
-import { ElementRef, useEffect, useReducer, useRef } from "react";
+import { ElementRef, ReactNode, useEffect, useReducer, useRef } from "react";
 
 function callMe() {
   console.log("called");
 }
 
-function ReactComment({ children }) {
+function ReactComment({ children }: { children: ReactNode }) {
   const ref = useRef<ElementRef<"div">>(null);
 
-  useEffect(() => {
-    const element = ref.current;
+  useEffect(
+    function injectChildrenToDOM() {
+      const element = ref.current;
 
-    if (element) {
-      element.outerHTML = `<!-- ${children} -->`;
-    }
-  }, []);
+      if (element) {
+        element.outerHTML = `<!-- ${children} -->`;
+      }
+    },
+    [children],
+  );
 
   return <div ref={ref} />;
 }

@@ -1,7 +1,3 @@
-import * as V from "varsace";
-import Logo from "./Logo";
-import { css } from "./css-hooks";
-
 const Child = ({ content = "Hello from child" }: { content?: string }) => {
   return <h1>{content}</h1>;
 };

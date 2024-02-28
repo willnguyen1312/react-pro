@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 export function CircularProgress() {
   const [progress, setProgress] = useState(1);
   const circularProgressRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+
+  useEffect(function calculateProgress() {
     let progressStartValue = 0;
     const progressEndValue = 90;
     const speed = 100;
