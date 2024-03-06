@@ -9,18 +9,6 @@ const root = ReactDOM.createRoot(rootElement);
 export const App = () => {
   const [arr, setArr] = useState([1, 2, 3, 4, 5, 6, 7]);
 
-  // const array = useMemo(() => {
-  //   const isOdd = counter % 2 === 1;
-
-  //   if (isOdd) {
-  //     return [<div>Odd One</div>];
-  //   }
-
-  //   return [<div>Even One</div>];
-  // }, [counter]);
-
-  console.log(arr);
-
   return (
     <>
       <p>Simple app</p>
