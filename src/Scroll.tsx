@@ -19,7 +19,7 @@ export default class ScrollingList extends React.Component {
     }
   }
 
-  componentDidUpdate(_, _, snapshot) {
+  componentDidUpdate(_, __, snapshot) {
     // If we have a snapshot value, we've just added new items.
     // Adjust scroll so these new items don't push the old ones out of view.
     // (snapshot here is the value returned from getSnapshotBeforeUpdate)
