@@ -14,7 +14,6 @@
   "dependencies": {
     "@css-hooks/react": "^2.0.4",
     "@fontsource/inter": "^5.0.18",
-    "@shopify/polaris": "0.0.0-snapshot-20240501141452",
     "@tanstack/react-router": "1.29.2",
     "@tanstack/router-devtools": "1.29.2",
     "@zoom-image/react": "^0.4.14",

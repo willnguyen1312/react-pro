@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import "virtual:uno.css";
 
-import App from "./Scroll";
+import App from "./ResizeObserver";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
