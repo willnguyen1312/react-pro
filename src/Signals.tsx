@@ -1,7 +1,5 @@
 import { signal } from "@preact/signals-react";
 
-// import { useSignals } from "@preact/signals-react/runtime";
-
 const count = signal({
   hi: {
     there: "123",
@@ -17,7 +15,8 @@ function increaseCount() {
 }
 
 function Counter() {
-  // useSignals();
+  console.log("Counter rendered");
+
   return (
     <>
       <h1>Value: {count.value.numb}</h1>
@@ -31,7 +30,8 @@ function Counter() {
 const showSignal = signal(true);
 
 export default function App() {
-  // useSignals();
+  console.log("App rendered");
+
   return (
     <div className="App">
       <button
@@ -41,7 +41,12 @@ export default function App() {
       >
         Toggle
       </button>
-      {showSignal.value ? <Counter /> : null}
+      {showSignal.value ? (
+        <>
+          <h1>Message: {count.value.hi.there}</h1>
+          <Counter />
+        </>
+      ) : null}
     </div>
   );
 }
