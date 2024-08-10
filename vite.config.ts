@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 import UnoCSS from "unocss/vite";
@@ -11,7 +11,11 @@ export default defineConfig({
     //     return id.substring(__dirname.length + 1);
     //   },
     // }),
-    react(),
+    react({
+      babel: {
+        plugins: [["module:@preact/signals-react-transform"]],
+      },
+    }),
     UnoCSS(),
   ],
   server: {
