@@ -29,7 +29,7 @@ function Counter() {
 
 const showSignal = signal(true);
 
-export default function App() {
+export function Nested() {
   console.log("App rendered");
 
   return (
@@ -47,6 +47,26 @@ export default function App() {
           <Counter />
         </>
       ) : null}
+    </div>
+  );
+}
+
+const countSignal = signal(0);
+
+export default function App() {
+  console.log("App rendered");
+  return (
+    <div>
+      <h1>Signals value: </h1>
+      <p>{countSignal}</p>
+
+      <button
+        onClick={() => {
+          countSignal.value += 1;
+        }}
+      >
+        Increment
+      </button>
     </div>
   );
 }
