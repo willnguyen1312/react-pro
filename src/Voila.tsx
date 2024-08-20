@@ -1,3 +1,3 @@
 export function Voila() {
-  return <h1>Voila</h1>;
+  return <h1>Voila ✨</h1>;
 }
