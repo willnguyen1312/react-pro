@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals-react";
+import { effect, signal, useSignalEffect } from "@preact/signals-react";
 
 const count = signal({
   hi: {
@@ -53,8 +53,25 @@ export function Nested() {
 
 const countSignal = signal(0);
 
+effect(() => {
+  console.log("Signal value changed", countSignal.value);
+
+  return () => {
+    console.log("Signal value changed cleanup");
+  };
+});
+
 export default function App() {
   console.log("App rendered");
+
+  useSignalEffect(() => {
+    console.log("Signal value changed", countSignal.value);
+
+    return () => {
+      console.log("Signal value changed cleanup");
+    };
+  });
+
   return (
     <div>
       <h1>Signals value: </h1>
