@@ -3,14 +3,18 @@ import { defineConfig } from "vite";
 
 import UnoCSS from "unocss/vite";
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react"],
+          "react-dom": ["react-dom"],
+        },
+      },
+    },
+  },
   plugins: [
-    // inspectReact({
-    //   formatDataInspectId: (id) => {
-    //     return id.substring(__dirname.length + 1);
-    //   },
-    // }),
     react({
       babel: {
         plugins: [["module:@preact/signals-react-transform"]],
