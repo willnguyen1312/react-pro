@@ -3,7 +3,7 @@ import "virtual:uno.css";
 
 import { lazy, Suspense } from "react";
 
-const AyncApp = lazy(() => import("./Sticky"));
+const AyncApp = lazy(() => import("./Signals"));
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
