@@ -1,18 +1,18 @@
 import { effect, signal, useSignalEffect } from "@preact/signals-react";
 
-const randomSignal = signal(0);
+// const randomSignal = signal(0);
 
-effect(() => {
-  console.log("Random signal value changed once", randomSignal.value);
-});
+// effect(() => {
+//   console.log("Random signal value changed once", randomSignal.value);
+// });
 
-effect(() => {
-  console.log("Random signal value changed twice", randomSignal.value);
-});
+// effect(() => {
+//   console.log("Random signal value changed twice", randomSignal.value);
+// });
 
-setInterval(() => {
-  randomSignal.value += 1;
-}, 1000);
+// setInterval(() => {
+//   randomSignal.value += 1;
+// }, 1000);
 
 const count = signal({
   hi: {
@@ -75,7 +75,7 @@ effect(() => {
   };
 });
 
-export default function App() {
+function App1() {
   // console.log("App rendered");
 
   useSignalEffect(() => {
@@ -94,6 +94,31 @@ export default function App() {
       <button
         onClick={() => {
           countSignal.value += 1;
+        }}
+      >
+        Increment
+      </button>
+    </div>
+  );
+}
+
+const countSignal2 = signal(0);
+
+export default function App2() {
+  if (countSignal2.value) {
+    effect(() => {
+      console.log(countSignal2.value);
+    });
+  }
+
+  return (
+    <div>
+      <h1>Count value: </h1>
+      <p>{countSignal2}</p>
+
+      <button
+        onClick={() => {
+          countSignal2.value += 1;
         }}
       >
         Increment
