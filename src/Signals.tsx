@@ -123,10 +123,14 @@ export default function App2() {
       alert(document.visibilityState);
     };
 
-    document.addEventListener("visibilitychange", handler);
+    // document.addEventListener("visibilitychange", handler);
+
+    window.addEventListener("focus", () => {
+      console.log("Focus");
+    });
 
     return () => {
-      document.removeEventListener("visibilitychange", handler);
+      // document.removeEventListener("visibilitychange", handler);
     };
   }, []);
 
