@@ -104,6 +104,10 @@ function App1() {
 
 const countSignal2 = signal(0);
 
+setInterval(() => {
+  console.log(document.visibilityState);
+}, 1000);
+
 export default function App2() {
   if (countSignal2.value) {
     effect(() => {
