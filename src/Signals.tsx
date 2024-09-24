@@ -1,4 +1,5 @@
 import { effect, signal, useSignalEffect } from "@preact/signals-react";
+import { useEffect } from "react";
 
 // const randomSignal = signal(0);
 
@@ -104,16 +105,30 @@ function App1() {
 
 const countSignal2 = signal(0);
 
-setInterval(() => {
-  console.log(document.visibilityState);
-}, 1000);
+// setInterval(() => {
+//   console.log(document.visibilityState);
+// }, 1000);
 
 export default function App2() {
-  if (countSignal2.value) {
-    effect(() => {
-      console.log(countSignal2.value);
-    });
-  }
+  // if (countSignal2.value) {
+  //   effect(() => {
+  //     console.log(countSignal2.value);
+  //   });
+  // }
+
+  useEffect(() => {
+    const handler = () => {
+      console.log(document.visibilityState);
+
+      alert(document.visibilityState);
+    };
+
+    document.addEventListener("visibilitychange", handler);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handler);
+    };
+  }, []);
 
   return (
     <div>
