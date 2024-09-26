@@ -5,6 +5,18 @@ import { Suspense, useEffect, useRef } from "react";
 
 // const AsyncApp = lazy(() => import("./Signals"));
 
+async function main() {
+  const firstPromise = Promise.resolve("first");
+
+  const second = undefined;
+
+  const data = await Promise.all([firstPromise, second]);
+
+  console.log(data);
+}
+
+main();
+
 const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
