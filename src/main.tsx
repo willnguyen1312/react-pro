@@ -21,6 +21,8 @@ const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
 
+const arr = ["Nam", "Nguyen"];
+
 function App() {
   const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
 
@@ -62,6 +64,8 @@ function App() {
       >
         Click to open popup
       </button>
+
+      {arr}
     </div>
   );
 }
