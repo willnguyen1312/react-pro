@@ -21,8 +21,6 @@ const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
 
-const arr = ["Nam", "Nguyen"];
-
 function App() {
   const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
 
@@ -41,6 +39,8 @@ function App() {
       window.removeEventListener("focus", handler);
     };
   }, []);
+
+  const nameArr = ["Nam Nguyen", ""];
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -65,7 +65,7 @@ function App() {
         Click to open popup
       </button>
 
-      {arr}
+      {nameArr}
     </div>
   );
 }
