@@ -16,12 +16,16 @@ export default function MutationObserverApp() {
       if (removedNode) {
         console.log("Node removed:", removedNode);
       }
+
+      const listOfCells = document.querySelectorAll("li[data-id=cell]");
+      console.log("Number of cells:", listOfCells.length);
     });
 
-    const ul = document.querySelector("ul") as HTMLUListElement;
+    const wrapper = document.querySelector("div#wrapper") as HTMLDivElement;
 
-    observer.observe(ul, {
+    observer.observe(wrapper, {
       childList: true,
+      subtree: true,
     });
 
     return () => {
@@ -30,7 +34,7 @@ export default function MutationObserverApp() {
   }, []);
 
   return (
-    <div>
+    <div id="wrapper">
       <h1>Mutation observer</h1>
       <button
         onClick={() => {
