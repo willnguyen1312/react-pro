@@ -1,7 +1,15 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function ReactRef() {
   const reactRef = useRef<string>();
+
+  useEffect(() => {
+    console.log("ReactRef mounted");
+
+    return () => {
+      console.log("ReactRef unmounted");
+    };
+  }, []);
 
   if (!reactRef.current) {
     reactRef.current = "⚛️";
