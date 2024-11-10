@@ -1,4 +1,9 @@
-import { useComputed, useSignal } from "@preact/signals-react";
+import {
+  batch,
+  Signal,
+  useSignal,
+  useSignalEffect,
+} from "@preact/signals-react";
 // import { useSignals } from "@preact/signals-react/runtime";
 
 // const countSignal = signal(0);
@@ -8,26 +13,33 @@ export default function App() {
 
   const countSignal = useSignal(0);
 
-  const doubleCount = useComputed(() => {
-    console.log("doubleCount");
-    return countSignal.value * 2;
+  useSignalEffect(() => {
+    console.log("countSignal changed", countSignal.value);
   });
 
   return (
     <div>
       <h1>Count value: </h1>
-      <p>{countSignal.value}</p>
+      <ValueDisplay countSignal={countSignal} />
 
       <button
         onClick={() => {
-          countSignal.value += 1;
-          countSignal.value += 1;
+          batch(() => {
+            countSignal.value += 1;
+            countSignal.value += 1;
+            countSignal.value += 1;
+            countSignal.value += 1;
+            countSignal.value += 1;
+          });
         }}
       >
         Increment
       </button>
-
-      <h1>Double Count value: {doubleCount.value}</h1>
     </div>
   );
+}
+
+function ValueDisplay(props: { countSignal: Signal<number> }) {
+  console.log("ValueDisplay render");
+  return <h1>Value: {props.countSignal.value}</h1>;
 }
