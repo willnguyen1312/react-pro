@@ -16,9 +16,9 @@ export default defineConfig({
   },
   plugins: [
     react({
-      // babel: {
-      // plugins: [["module:@preact/signals-react-transform"]],
-      // },
+      babel: {
+        plugins: [["module:@preact/signals-react-transform"]],
+      },
     }),
     UnoCSS(),
   ],
