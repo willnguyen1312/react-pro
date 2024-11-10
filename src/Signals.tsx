@@ -24,13 +24,13 @@ export default function App() {
 
       <button
         onClick={() => {
-          batch(() => {
-            countSignal.value += 1;
-            countSignal.value += 1;
-            countSignal.value += 1;
-            countSignal.value += 1;
-            countSignal.value += 1;
-          });
+          // batch(() => {
+          countSignal.value += 1;
+          countSignal.value += 1;
+          countSignal.value += 1;
+          countSignal.value += 1;
+          countSignal.value += 1;
+          // });
         }}
       >
         Increment
