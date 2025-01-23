@@ -1,36 +1,20 @@
 import { useEffect, useState } from "react";
 
-const Parent1 = ({ children }: {
-  children: React.ReactNode;
-}) => {
-  return (
-    children
-  );
-}
-
-const Parent2 = ({ children }: {
-  children: React.ReactNode;
-}) => {
-  return (
-    children
-  );
-}
-
 const Diff = () => {
   const [value, setValue] = useState(5);
 
   let ui = null;
   if (value % 2 === 0) {
     ui = (
-      <Parent1>
+      <section>
         <List value={value} />
-      </Parent1>
+      </section>
     );
   } else {
     ui = (
-      <Parent1>
+      <section>
         <List value={value} />
-      </Parent1>
+      </section>
     );
   }
 
@@ -51,7 +35,7 @@ const Diff = () => {
 
 const block = (time: number) => {
   let start = Date.now();
-  while (Date.now() - start < time) { }
+  while (Date.now() - start < time) {}
 };
 
 const List = (props: { value: number }) => {
