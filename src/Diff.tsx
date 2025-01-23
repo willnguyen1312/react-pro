@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Diff = () => {
   const [value, setValue] = useState(5);
 
-  let ui = null;
-  if (value % 2 === 0) {
-    ui = (
-      <section>
-        <List value={value} />
-      </section>
-    );
-  } else {
-    ui = (
-      <section>
-        <List value={value} />
-      </section>
-    );
-  }
-
   return (
-    <div>
-      {ui}
+    <React.Fragment key={value}>
+      <List value={value} />
 
       <button
         onClick={() => {
@@ -29,7 +14,7 @@ const Diff = () => {
       >
         Click me
       </button>
-    </div>
+    </React.Fragment>
   );
 };
 
@@ -43,6 +28,7 @@ const List = (props: { value: number }) => {
     // Block 1s
     block(1000);
   }, []);
+
   return Array.from({ length: props.value }).map((_, index) => (
     <p key={index}>{index + 1}</p>
   ));
