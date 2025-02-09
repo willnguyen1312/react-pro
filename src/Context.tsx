@@ -10,6 +10,8 @@ const CountContext = createContext<{
 }
 );
 
+CountContext.displayName = 'CountContext'
+
 // Create a provider component
 const CountProvider = ({ children }: { children: ReactNode }) => {
     const [count, setCount] = useState(0);
