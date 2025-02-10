@@ -1,4 +1,5 @@
 import { memo, useCallback, useState } from "react";
+import { produce } from "immer";
 
 type Item = {
   id: string;
@@ -31,6 +32,8 @@ const ItemRenderer = memo(
 
 ItemRenderer.displayName = "ItemRenderer";
 
+let lastList: any = null;
+
 export default function List() {
   const [list, setList] = useState<Item[]>(() => {
     return [
@@ -55,22 +58,19 @@ export default function List() {
     ];
   });
 
+  if (lastList !== list) {
+    lastList = list;
+    console.log("List updated");
+  }
+
   const onChange = useCallback((newValue: string, id: string) => {
     setList((prevList) => {
-      return prevList.reduce<Item[]>((acc, item) => {
-        acc.push(item);
-
-        if (item.id === id) {
-          acc[acc.length - 1] = {
-            ...item,
-            order: {
-              name: newValue,
-            },
-          };
+      return produce(prevList, (draft) => {
+        const item = draft.find((item) => item.id === id);
+        if (item) {
+          item.order.name = newValue;
         }
-
-        return acc;
-      }, []);
+      });
     });
   }, []);
 
