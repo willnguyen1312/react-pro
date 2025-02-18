@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 
 export default function Rerender({ children }: { children?: React.ReactNode }) {
   const [value, setValue] = useState("");
   return (
     <div>
-      {children}
+      <Button>
+        <Child />
+      </Button>
       <input
         type="text"
         value={value}
@@ -14,7 +16,12 @@ export default function Rerender({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export function Button() {
+export const Button = memo(({ children }: { children?: React.ReactNode }) => {
   console.log("Button rendered");
-  return <button>Click me</button>;
+  return <button>{children}</button>;
+});
+
+export function Child() {
+  console.log("Child rendered");
+  return <div>Child</div>;
 }
