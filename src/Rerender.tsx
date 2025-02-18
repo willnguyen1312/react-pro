@@ -7,6 +7,7 @@ export default function Rerender({ children }: { children?: React.ReactNode }) {
       <Button>
         <Child />
       </Button>
+      {/* {children} */}
       <input
         type="text"
         value={value}
