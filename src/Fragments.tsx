@@ -5,13 +5,6 @@ export default function Fragments() {
 
   const ui: ReactNode[] = [];
 
-  //   Same key, different value
-  //   if (type === "a") {
-  //     ui.push(<Child key="same-key" value="a" />);
-  //   } else {
-  //     ui.push(<Child key="same-key" value="b" />);
-  //   }
-
   //   Different key, different value
   if (type === "a") {
     ui.push(
@@ -22,7 +15,7 @@ export default function Fragments() {
   } else {
     ui.push(
       <Fragment key="b">
-        <Child key="same-key" value="b" />
+        <Child key="same-key" value="a" />
       </Fragment>
     );
   }
