@@ -21,13 +21,13 @@ export default function Fragments() {
   }
 
   return (
-    <div>
+    <>
       <h1>Fragments</h1>
       <button onClick={() => setType("a")}>A</button>
       <button onClick={() => setType("b")}>B</button>
 
       {ui}
-    </div>
+    </>
   );
 }
 
