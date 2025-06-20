@@ -10,13 +10,13 @@ export default function Fragments() {
     ui.push(
       <Fragment key="a">
         <Child key="same-key" value="a" />
-      </Fragment>
+      </Fragment>,
     );
   } else {
     ui.push(
       <Fragment key="b">
         <Child key="same-key" value="a" />
-      </Fragment>
+      </Fragment>,
     );
   }
 
