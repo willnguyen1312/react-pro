@@ -2,11 +2,12 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import "virtual:uno.css";
 
-import App from "./OverlayPreventClick";
+import App from "./UseState";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
+
 
 root.render(
   <ErrorBoundary
