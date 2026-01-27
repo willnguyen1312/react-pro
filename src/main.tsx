@@ -2,12 +2,11 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import "virtual:uno.css";
 
-import App from "./UseState";
+import App from "./Signals";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
-
 
 root.render(
   <ErrorBoundary
@@ -16,7 +15,6 @@ root.render(
     }}
     fallback={<div>Error 😅</div>}
   >
-    <h1>Hello</h1>
     <App />
-  </ErrorBoundary>
+  </ErrorBoundary>,
 );
