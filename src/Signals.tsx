@@ -53,7 +53,7 @@ function App() {
   // local will automatically update when external changes
 
   return <div>
-    <button onClick={() => setLocal(local + 1)}>Increment</button>
+    <button style={{ width: 500 }} onClick={() => setLocal(local + 1)}>Increment</button>
     <ComponentWithLive value={local} />
   </div>;
 }
