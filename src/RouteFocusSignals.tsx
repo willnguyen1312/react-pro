@@ -9,28 +9,35 @@ import {
 
 // ----------------------------------------------------------------------------
 // Signals port of RouteFocus.tsx. Same shape, with @preact/signals-react in
-// place of useState / useRef / useEffect. Untested on hardware in this form
-// — the React-hooks version was verified; this port hasn't been run on iPad
-// yet.
+// place of useState / useRef / useEffect. Verified on real iPad (Bluetooth
+// keyboard disconnected) — useSignalEffect schedules at a compatible enough
+// time to useEffect that the iPad keyboard still opens.
 //
 // Load-bearing for the iPad keyboard (regardless of state library):
 //
 //   - navigate(to, { flushSync: true }) — opts out of react-router-dom's
 //     default startTransition wrapping so the destination route commits
-//     synchronously. Without this, iOS treats the post-mount focus call as
-//     programmatic and the keyboard stays closed.
+//     synchronously. Without this, the iPad keyboard doesn't open from the
+//     post-mount focus call. (The exact WebKit rule for when a programmatic
+//     focus is allowed to open the soft keyboard isn't publicly documented;
+//     all we have is the empirical observation.)
 //   - The mount-time focus call on Route B's input — the actual focus.
 //
 // What still won't work, regardless:
 //
-//   - Refreshing directly on /b. No user gesture → no keyboard, on any
-//     mobile browser.
+//   - Refreshing directly on /b. No user gesture, no keyboard. (Tested on
+//     iPad Safari only here; mobile browsers generally require user
+//     activation to open the soft keyboard, but other browsers weren't
+//     directly verified in this demo.)
 //
-// Signals-specific note: useSignalEffect takes no deps array because
-// useSignalRef makes the ref itself a signal. When React assigns the DOM
-// node via `inputRef.current = node`, the signal setter fires and the
-// effect re-runs with the node in scope — same one-shot focus-on-mount
-// behaviour as useEffect(fn, []), expressed in signal vocabulary.
+// Signals-specific note: useSignalEffect has no deps array — it tracks
+// signals automatically. useSignalRef returns a signal whose `.current`
+// getter/setter proxies to `.value`, so reading `inputRef.current` inside
+// the effect subscribes to the ref signal. By the time the effect first
+// fires (after commit, like useEffect), React has already populated the
+// ref, so the input element is in scope. Same one-shot focus-on-mount
+// outcome as useEffect(() => input.focus(), []), expressed in signal
+// vocabulary.
 //
 // The @preact/signals-react-transform Babel plugin (vite.config.ts) auto-
 // tracks signal `.value` reads in component bodies, so the controlled

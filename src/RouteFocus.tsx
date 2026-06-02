@@ -14,16 +14,20 @@ import {
 //
 //   - navigate(to, { flushSync: true }) — opts out of react-router-dom's
 //     default startTransition wrapping so the destination route commits
-//     synchronously. Without this, iOS treats the post-mount focus call as
-//     programmatic and the keyboard stays closed.
+//     synchronously. Without this, the iPad keyboard doesn't open from the
+//     post-mount focus call. (The exact WebKit rule for when a programmatic
+//     focus is allowed to open the soft keyboard isn't publicly documented;
+//     all we have is the empirical observation.)
 //   - useEffect on Route B mount focuses the input — the actual focus.
 //
 // What still won't work, regardless:
 //
-//   - Refreshing directly on /b. No user gesture → no keyboard, on any
-//     mobile browser.
+//   - Refreshing directly on /b. No user gesture, no keyboard. (Tested on
+//     iPad Safari only here; mobile browsers generally require user
+//     activation to open the soft keyboard, but other browsers weren't
+//     directly verified in this demo.)
 //
-// Signals port in RouteFocusSignals.tsx (untested on hardware).
+// Signals port in RouteFocusSignals.tsx (also verified on iPad).
 // ----------------------------------------------------------------------------
 
 function Layout() {
