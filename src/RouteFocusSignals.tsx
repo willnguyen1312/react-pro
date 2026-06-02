@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useSignal, useSignalEffect } from "@preact/signals-react";
+import { useSignalRef } from "@preact/signals-react/utils";
 import {
   createBrowserRouter,
   Outlet,
@@ -7,32 +8,43 @@ import {
 } from "react-router-dom";
 
 // ----------------------------------------------------------------------------
-// iPad-keyboard-on-route-change demo. Verified on real iPad (Bluetooth
-// keyboard disconnected).
+// Signals port of RouteFocus.tsx. Same shape, with @preact/signals-react in
+// place of useState / useRef / useEffect. Untested on hardware in this form
+// — the React-hooks version was verified; this port hasn't been run on iPad
+// yet.
 //
-// Load-bearing pieces:
+// Load-bearing for the iPad keyboard (regardless of state library):
 //
 //   - navigate(to, { flushSync: true }) — opts out of react-router-dom's
 //     default startTransition wrapping so the destination route commits
 //     synchronously. Without this, iOS treats the post-mount focus call as
 //     programmatic and the keyboard stays closed.
-//   - useEffect on Route B mount focuses the input — the actual focus.
+//   - The mount-time focus call on Route B's input — the actual focus.
 //
 // What still won't work, regardless:
 //
 //   - Refreshing directly on /b. No user gesture → no keyboard, on any
 //     mobile browser.
 //
-// Signals port in RouteFocusSignals.tsx (untested on hardware).
+// Signals-specific note: useSignalEffect takes no deps array because
+// useSignalRef makes the ref itself a signal. When React assigns the DOM
+// node via `inputRef.current = node`, the signal setter fires and the
+// effect re-runs with the node in scope — same one-shot focus-on-mount
+// behaviour as useEffect(fn, []), expressed in signal vocabulary.
+//
+// The @preact/signals-react-transform Babel plugin (vite.config.ts) auto-
+// tracks signal `.value` reads in component bodies, so the controlled
+// <input> re-renders on every keystroke without a manual useSignals() call.
 // ----------------------------------------------------------------------------
 
 function Layout() {
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Route A → B autofocus 🎯</h1>
+      <h1>Route A → B autofocus 🎯 (signals)</h1>
       <p style={{ color: "#666" }}>
-        <code>navigate(to, {`{ flushSync: true }`})</code> +{" "}
-        <code>useEffect</code> on Route B that focuses the input on mount.
+        <code>@preact/signals-react</code> port of <code>RouteFocus.tsx</code>.{" "}
+        <code>useSignal</code>, <code>useSignalRef</code>,{" "}
+        <code>useSignalEffect</code> in place of React hooks.
       </p>
       <Outlet />
     </div>
@@ -56,12 +68,12 @@ function RouteA() {
 
 function RouteB() {
   const navigate = useNavigate();
-  const [value, setValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const value = useSignal("");
+  const inputRef = useSignalRef<HTMLInputElement | null>(null);
 
-  useEffect(function focusInputOnMount() {
+  useSignalEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  });
 
   return (
     <section>
@@ -70,8 +82,10 @@ function RouteB() {
         <input
           ref={inputRef}
           type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={value.value}
+          onChange={(e) => {
+            value.value = e.target.value;
+          }}
           placeholder="Auto-focused on arrival"
           style={{ fontSize: "1.2rem", padding: "0.25rem 0.5rem" }}
         />
@@ -96,6 +110,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default function RouteFocus() {
+export default function RouteFocusSignals() {
   return <RouterProvider router={router} />;
 }
