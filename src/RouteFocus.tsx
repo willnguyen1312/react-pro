@@ -1,5 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createBrowserRouter,
   Outlet,
@@ -8,80 +7,47 @@ import {
 } from "react-router-dom";
 
 // ----------------------------------------------------------------------------
-// Module-level proxy element
-// ----------------------------------------------------------------------------
+// Minimal version — verified on real iPad
 //
-// Always-mounted hidden <input>. iOS Safari needs an element that existed in
-// the DOM at gesture start to accept "user-initiated focus" and open the
-// soft keyboard. We focus this first; whichever route mounts during the
-// navigation steals focus afterwards.
-
-let proxyElement: HTMLInputElement | null = null;
-
-// ----------------------------------------------------------------------------
-// useNavigateAndOpenKeyboard
-// ----------------------------------------------------------------------------
+// What's here:
+//   - navigate(to, { flushSync: true })  ← react-router-dom's typed opt-out
+//     of the default React.startTransition wrapping. Required.
+//   - useEffect on Route B mount focuses the input. Required.
 //
-// Run on the click handler. Captures the keyboard via the proxy, then
-// triggers a synchronous route commit. The destination route is responsible
-// for focusing its own real input on mount (see RouteB's useLayoutEffect).
+// What's NOT here (confirmed unnecessary in this scenario):
+//   - The "proxy input" trick. The folklore rule that "iOS needs an element
+//     that existed at gesture start" appears to NOT apply here — flushSync
+//     alone is sufficient for the keyboard to open on the freshly-mounted
+//     destination input. This contradicts what I (and most blog posts)
+//     claim about the iOS keyboard rules. I don't have a precise model for
+//     why; the empirical answer is "flushSync alone works on real iPad."
 //
-// `flushSync: true` is react-router-dom's typed per-call option that swaps
-// the default React.startTransition wrapping for ReactDOM.flushSync. That's
-// what keeps the destination's useLayoutEffect inside the gesture's call
-// stack, instead of deferring it to a transition flush after the gesture
-// has expired.
-
-function useNavigateAndOpenKeyboard() {
-  const navigate = useNavigate();
-
-  return function navigateAndOpenKeyboard(to: string) {
-    proxyElement?.focus();
-    navigate(to, { flushSync: true });
-  };
-}
-
-// ----------------------------------------------------------------------------
-// Layout — owns the always-mounted proxy input
+// What still doesn't work, regardless:
+//   - Refreshing directly on /b. There's no user gesture to anchor focus
+//     to, no React-side trick gets past that.
 // ----------------------------------------------------------------------------
 
 function Layout() {
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Route A → B autofocus 🎯 (useLayoutEffect on B)</h1>
+      <h1>Route A → B autofocus 🎯 (flushSync only)</h1>
       <p style={{ color: "#666" }}>
-        Route A only triggers the navigation. Route B owns the focus call
-        via <code>useLayoutEffect</code> — which runs synchronously inside
-        the <code>flushSync</code> commit, still on the click handler&apos;s
-        call stack.
+        No proxy. Just <code>navigate(to, {`{ flushSync: true }`})</code>{" "}
+        and a <code>useEffect</code> on Route B that focuses the input on
+        mount.
       </p>
-
-      <input
-        ref={(el) => {
-          proxyElement = el;
-        }}
-        type="text"
-        tabIndex={-1}
-        aria-hidden="true"
-        style={visuallyHidden}
-      />
-
       <Outlet />
     </div>
   );
 }
 
-// ----------------------------------------------------------------------------
-// Routes
-// ----------------------------------------------------------------------------
-
 function RouteA() {
-  const navigateAndOpenKeyboard = useNavigateAndOpenKeyboard();
+  const navigate = useNavigate();
   return (
     <section>
       <h2>Route A</h2>
       <button
-        onClick={() => navigateAndOpenKeyboard("/b")}
+        onClick={() => navigate("/b", { flushSync: true })}
         style={{ padding: "0.25rem 0.75rem", fontSize: "1rem" }}
       >
         Go to B
@@ -95,18 +61,6 @@ function RouteB() {
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Single focus call covers BOTH arrival paths:
-  //
-  //   A → B click:  inside flushSync, on the gesture's call stack. iOS
-  //                 transfers focus from the (already focused) proxy to
-  //                 this input. Keyboard stays open.
-  //
-  //   /b refresh:   no gesture exists. Input is focused, caret visible,
-  //                 but iOS Safari and Android Chrome both refuse to open
-  //                 the soft keyboard. User taps once to type.
-  //
-  // useLayoutEffect (not useEffect) so focus is set before paint — no
-  // unfocused-then-focused flash.
   useEffect(function focusInputOnMount() {
     inputRef.current?.focus();
   }, []);
@@ -134,10 +88,6 @@ function RouteB() {
   );
 }
 
-// ----------------------------------------------------------------------------
-// Top-level router setup
-// ----------------------------------------------------------------------------
-
 const router = createBrowserRouter([
   {
     Component: Layout,
@@ -151,15 +101,3 @@ const router = createBrowserRouter([
 export default function RouteFocus() {
   return <RouterProvider router={router} />;
 }
-
-const visuallyHidden: CSSProperties = {
-  position: "absolute",
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: "hidden",
-  clip: "rect(0 0 0 0)",
-  whiteSpace: "nowrap",
-  border: 0,
-};
