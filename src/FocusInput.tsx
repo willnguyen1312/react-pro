@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { flushSync } from "react-dom";
 
 export default function FocusInput() {
   const inputId = useId();
@@ -6,25 +7,31 @@ export default function FocusInput() {
   const [value, setValue] = useState("My step name");
 
   function startEditing() {
-    setIsEditing(true);
-    requestAnimationFrame(() => {
-      const input = document.getElementById(inputId) as HTMLInputElement | null;
-
-      if (input) {
-        input.focus();
-        const end = input.value.length;
-        input.setSelectionRange(end, end);
-      }
+    // Force React to render + commit the state update synchronously, so the
+    // input is in the DOM before we return from this line. This whole call
+    // chain — click → flushSync → focus — runs on the same JS tick as the
+    // user gesture, which is what iOS Safari requires before it'll open the
+    // soft keyboard. No rAF, no setTimeout, no async boundary.
+    flushSync(() => {
+      setIsEditing(true);
     });
+
+    const input = document.getElementById(inputId) as HTMLInputElement | null;
+
+    if (input) {
+      input.focus();
+      const end = input.value.length;
+      input.setSelectionRange(end, end);
+    }
   }
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Focus Input 🎯</h1>
+      <h1>Focus Input 🎯 (flushSync fix)</h1>
       <p style={{ color: "#666" }}>
-        Simulating the iPad bug: input is only mounted in edit mode, so focus
-        has to wait for the next frame — which iOS Safari treats as
-        programmatic focus and refuses to open the soft keyboard for.
+        flushSync forces React to commit the state change synchronously, so
+        the input exists by the next line. .focus() runs on the same tick as
+        the click, so iOS treats it as user-initiated and opens the keyboard.
       </p>
 
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
