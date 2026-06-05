@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import "virtual:uno.css";
 
-import App from "./RouteFocusSignals";
+import App from "./OpenPdfInNewTab";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
