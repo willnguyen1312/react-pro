@@ -72,11 +72,10 @@ const books: Book[] = BOOK_TITLES.map((name, index) => ({
 
 // --- Styles ----------------------------------------------------------------
 
-// `max-content`: each column is exactly as wide as its widest single-line cell.
-// Combined with `white-space: nowrap` and no clipping, the long summary/header
-// column grows wider than the container, so the grid overflows and scrolls
-// horizontally — scroll right to read the full text.
-const GRID_TEMPLATE_COLUMNS = "max-content max-content max-content";
+// `minmax(0, 1fr)` instead of bare `1fr`: a `1fr` track has an `auto` floor that
+// refuses to shrink below its content, so a single-line (nowrap) cell would blow
+// the column out to the full text width. A `0` floor lets the cell clip + ellipsis.
+const GRID_TEMPLATE_COLUMNS = "repeat(3, minmax(0, 1fr))";
 const BORDER = "1px solid #e2e2e2";
 
 const headerCellStyle: React.CSSProperties = {
@@ -89,6 +88,8 @@ const headerCellStyle: React.CSSProperties = {
   borderBottom: "2px solid #d0d0d0",
   textAlign: "left",
   whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
 const cellStyle: React.CSSProperties = {
@@ -96,6 +97,8 @@ const cellStyle: React.CSSProperties = {
   borderBottom: BORDER,
   lineHeight: 1.45,
   whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
 // --- Component -------------------------------------------------------------
@@ -112,8 +115,8 @@ export default function ScrollableGridTable() {
       <h2 style={{ margin: "0 0 4px" }}>Scrollable grid table</h2>
       <p style={{ margin: "0 0 16px", color: "#666", fontSize: 13 }}>
         Header is {SUMMARY_HEADER.length} chars · each summary is{" "}
-        {books[0].summary.length} chars · scroll right to read full cells; the
-        header stays pinned while you scroll down.
+        {books[0].summary.length} chars · cells clip to one line with “…” (hover
+        to see the full text); the header stays pinned while you scroll down.
       </p>
 
       <div
@@ -136,7 +139,7 @@ export default function ScrollableGridTable() {
         <div role="columnheader" style={headerCellStyle}>
           name
         </div>
-        <div role="columnheader" style={headerCellStyle}>
+        <div role="columnheader" style={headerCellStyle} title={SUMMARY_HEADER}>
           {SUMMARY_HEADER}
         </div>
 
@@ -153,10 +156,18 @@ export default function ScrollableGridTable() {
             >
               {book.id}
             </div>
-            <div role="cell" style={{ ...cellStyle, fontWeight: 500 }}>
+            <div
+              role="cell"
+              style={{ ...cellStyle, fontWeight: 500 }}
+              title={book.name}
+            >
               {book.name}
             </div>
-            <div role="cell" style={{ ...cellStyle, color: "#444" }}>
+            <div
+              role="cell"
+              style={{ ...cellStyle, color: "#444" }}
+              title={book.summary}
+            >
               {book.summary}
             </div>
           </div>
