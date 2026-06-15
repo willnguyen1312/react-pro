@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const PDF_URL = "https://pdfobject.com/pdf/sample.pdf";
-const DELAY_MS = 5000;
+const DELAY_MS = 10000;
 
 // HTML painted into the new tab while we wait. Self-contained — no network
 // requests — so it appears instantly inside the blank `about:blank` tab.
@@ -41,23 +41,9 @@ export default function OpenPdfInNewTab() {
   const handleClick = () => {
     setError("");
 
-    // The trick: open the tab SYNCHRONOUSLY inside the click handler so the
-    // browser counts it as a user-initiated popup. Navigating it later via
-    // `tab.location.href` isn't subject to the popup blocker.
-    const tab = window.open("", "_blank");
-    if (!tab) {
-      setError("Popup was blocked. Please allow popups for this site.");
-      return;
-    }
-
-    tab.document.write(LOADING_HTML);
-    tab.document.close();
-
     setIsLoading(true);
     timeoutRef.current = window.setTimeout(() => {
-      timeoutRef.current = null;
-      setIsLoading(false);
-      if (!tab.closed) tab.location.href = PDF_URL;
+      window.open(PDF_URL, "_blank");
     }, DELAY_MS);
   };
 
