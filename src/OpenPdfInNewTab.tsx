@@ -41,10 +41,8 @@ export default function OpenPdfInNewTab() {
   const handleClick = () => {
     setError("");
 
-    setIsLoading(true);
-    timeoutRef.current = window.setTimeout(() => {
-      window.open(PDF_URL, "_blank");
-    }, DELAY_MS);
+    window.open(PDF_URL, "_blank");
+    window.open(PDF_URL, "_blank");
   };
 
   return (
