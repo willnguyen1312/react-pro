@@ -47,7 +47,7 @@ export default function OpenPdfInNewTab() {
 
   return (
     <div style={{ padding: 16, fontFamily: "system-ui, sans-serif" }}>
-      <h1>Open PDF (with loading tab)</h1>
+      <h1>Open 2 PDFs</h1>
       <button onClick={handleClick} disabled={isLoading}>
         {isLoading ? "Preparing…" : "Open PDF"}
       </button>
