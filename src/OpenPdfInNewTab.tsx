@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 const PDF_URL = "https://pdfobject.com/pdf/sample.pdf";
-const DELAY_MS = 10000;
+const DELAY_MS = 2000;
 
 // HTML painted into the new tab while we wait. Self-contained — no network
 // requests — so it appears instantly inside the blank `about:blank` tab.
 const LOADING_HTML = `<!DOCTYPE html>
-<title>Loading…</title>
+<title>Loading PDF…</title>
 <style>
   body {
     margin: 0; height: 100vh; display: grid; place-items: center;
@@ -23,7 +23,7 @@ const LOADING_HTML = `<!DOCTYPE html>
 </style>
 <div>
   <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-  Preparing your PDF…
+  Opening your PDF…
 </div>`;
 
 export default function OpenPdfInNewTab() {
@@ -41,17 +41,34 @@ export default function OpenPdfInNewTab() {
   const handleClick = () => {
     setError("");
 
-    window.open(PDF_URL, "_blank");
-    window.open(PDF_URL, "_blank");
+    // Open the tab synchronously inside the click handler so Safari treats it
+    // as user-initiated — its activation window is well under 1s — then paint
+    // a loading screen while we wait.
+    const newTab = window.open("", "_blank");
+    if (!newTab) {
+      setError("Couldn't open a new tab — check your popup blocker.");
+      return;
+    }
+    newTab.document.write(LOADING_HTML);
+    newTab.document.close();
+
+    setIsLoading(true);
+    timeoutRef.current = window.setTimeout(() => {
+      newTab.location.href = PDF_URL;
+      setIsLoading(false);
+      timeoutRef.current = null;
+    }, DELAY_MS);
   };
 
   return (
     <div style={{ padding: 16, fontFamily: "system-ui, sans-serif" }}>
-      <h1>Open 2 PDFs</h1>
+      <h1>Open a PDF in a new tab</h1>
       <button onClick={handleClick} disabled={isLoading}>
-        {isLoading ? "Preparing…" : "Open PDF"}
+        {isLoading ? "Opening…" : "Open PDF"}
       </button>
-      {isLoading && <p>The new tab will load the PDF in 5 seconds…</p>}
+      {isLoading && (
+        <p>A new tab opened — your PDF will load there in {DELAY_MS / 1000} seconds…</p>
+      )}
       {error && <p style={{ color: "crimson" }}>{error}</p>}
     </div>
   );
