@@ -23,7 +23,7 @@ describe("MaxLengthInput", () => {
     expect(field).toHaveValue("0123456789");
   });
 
-  it.each(Array.from({ length: 10 }, (_, i) => i))(
+  it.each(Array.from({ length: 100 }, (_, i) => i))(
     "stops the user typing past 10 characters (iteration %i)",
     async () => {
       const user = userEvent.setup();
