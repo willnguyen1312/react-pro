@@ -72,7 +72,7 @@ export default function MaxLengthDemo() {
           type="text"
           value={name}
           maxLength={CAP}
-          aria-label="Batch name"
+          aria-label="Cool name"
           onChange={(e) => setName(e.target.value)}
           placeholder={`Type here — typing IS capped at ${CAP}`}
           style={{
@@ -119,7 +119,9 @@ function ReportPanel({ report }: { report: Report }) {
   const rows: [string, string, boolean][] = [
     [
       `PR assertion: maxlength === '${CAP}'`,
-      report.assertionGreen ? `PASS (green) — attr is "${report.maxlengthAttr}"` : "FAIL",
+      report.assertionGreen
+        ? `PASS (green) — attr is "${report.maxlengthAttr}"`
+        : "FAIL",
       report.assertionGreen,
     ],
     ["Native validity.tooLong", String(report.tooLong), !report.tooLong],
@@ -133,7 +135,11 @@ function ReportPanel({ report }: { report: Report }) {
       report.passesSchema ? "valid" : "invalid",
       report.passesSchema,
     ],
-    ["Submitted name length", String(report.submittedLength), !report.exceedsCap],
+    [
+      "Submitted name length",
+      String(report.submittedLength),
+      !report.exceedsCap,
+    ],
   ];
 
   return (
@@ -147,11 +153,21 @@ function ReportPanel({ report }: { report: Report }) {
       }}
     >
       <strong>On submit:</strong>
-      <table style={{ borderCollapse: "collapse", width: "100%", marginTop: "0.5rem" }}>
+      <table
+        style={{
+          borderCollapse: "collapse",
+          width: "100%",
+          marginTop: "0.5rem",
+        }}
+      >
         <tbody>
           {rows.map(([label, value, good]) => (
             <tr key={label}>
-              <td style={{ padding: "4px 8px", borderBottom: "1px solid #eee" }}>{label}</td>
+              <td
+                style={{ padding: "4px 8px", borderBottom: "1px solid #eee" }}
+              >
+                {label}
+              </td>
               <td
                 style={{
                   padding: "4px 8px",
@@ -167,7 +183,12 @@ function ReportPanel({ report }: { report: Report }) {
         </tbody>
       </table>
 
-      <p style={{ marginBottom: 0, color: report.exceedsCap ? "#b00020" : "#0a7d28" }}>
+      <p
+        style={{
+          marginBottom: 0,
+          color: report.exceedsCap ? "#b00020" : "#0a7d28",
+        }}
+      >
         {report.exceedsCap
           ? `Verdict: the assertion stayed GREEN, yet a ${report.submittedLength}-char name was emitted. maxlength did NOT cap the output.`
           : "Verdict: output within cap."}
