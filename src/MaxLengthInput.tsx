@@ -18,9 +18,9 @@ export default function MaxLengthInput({
       type="text"
       aria-label={label}
       value={value}
-      // maxLength={MAX_LENGTH}
+      maxLength={MAX_LENGTH}
       onChange={(event) => {
-        setValue(event.target.value.slice(0, MAX_LENGTH));
+        setValue(event.target.value);
       }}
     />
   );
