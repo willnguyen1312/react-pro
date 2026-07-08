@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import "virtual:uno.css";
 
-import App from "./MaxLengthDemo";
+import App from "./EventOrder";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
