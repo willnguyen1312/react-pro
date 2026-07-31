@@ -1,9 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+interface EditableInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  onEnter: () => void;
+}
+
+function EditableInput({ value, onChange, onEnter }: EditableInputProps) {
+  useEffect(
+    function fireOnChangeOnValueChange() {
+      onChange(value);
+    },
+    [value],
+  );
+
+  return (
+    <input
+      ref={(node) => {
+        node?.focus();
+      }}
+      type="text"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          onEnter();
+        }
+      }}
+      style={{ fontSize: "1.2rem", padding: "0.25rem 0.5rem" }}
+    />
+  );
+}
 
 export default function EditableField() {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [value, setValue] = useState("Hello World");
-  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -11,23 +42,14 @@ export default function EditableField() {
 
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         {isEditing ? (
-          <input
-            ref={(node) => {
-              inputRef.current = node;
-              node?.focus();
-            }}
-            type="text"
+          <EditableInput
             value={value}
-            onChange={(e) => {
-              console.log(e.target.value);
-              setValue(e.target.value);
+            onChange={(newValue) => {
+              console.log(`newValue, ${newValue}`);
+              console.log(`oldValue, ${value}`);
+              setValue(newValue);
             }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setIsEditing(false);
-              }
-            }}
-            style={{ fontSize: "1.2rem", padding: "0.25rem 0.5rem" }}
+            onEnter={() => setIsEditing(false)}
           />
         ) : (
           <span style={{ fontSize: "1.2rem" }}>{value}</span>
