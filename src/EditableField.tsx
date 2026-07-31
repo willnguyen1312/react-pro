@@ -18,7 +18,10 @@ export default function EditableField() {
             }}
             type="text"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setValue(e.target.value);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setIsEditing(false);
@@ -35,6 +38,14 @@ export default function EditableField() {
           style={{ padding: "0.25rem 0.75rem", fontSize: "1rem" }}
         >
           {isEditing ? "Save" : "Edit"}
+        </button>
+        <button
+          onClick={() => {
+            setValue("Hi");
+          }}
+          style={{ padding: "0.25rem 0.75rem", fontSize: "1rem" }}
+        >
+          Say Hi
         </button>
       </div>
     </div>
