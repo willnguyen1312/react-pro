@@ -36,7 +36,7 @@ export default function EditableField() {
   const [isEditing, setIsEditing] = useState(true);
   const [value, setValue] = useState("Hello World");
 
-  console.log("rendering....");
+  console.log("rendering.... 😎");
 
   return (
     <div style={{ padding: "2rem" }}>
