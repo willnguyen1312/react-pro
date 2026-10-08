@@ -36,6 +36,8 @@ export default function EditableField() {
   const [isEditing, setIsEditing] = useState(true);
   const [value, setValue] = useState("Hello World");
 
+  console.log("rendering.... 😎");
+
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Editable Field ✏️</h1>
@@ -45,8 +47,8 @@ export default function EditableField() {
           <EditableInput
             value={value}
             onChange={(newValue) => {
-              console.log(`newValue, ${newValue}`);
-              console.log(`oldValue, ${value}`);
+              // console.log(`newValue, ${newValue}`);
+              // console.log(`oldValue, ${value}`);
               setValue(newValue);
             }}
             onEnter={() => setIsEditing(false)}
